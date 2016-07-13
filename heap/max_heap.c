@@ -1,26 +1,25 @@
 #include "max_heap.h"
 
 int32_t max_heap_push(uint32_t *heap, uint32_t size) {
-    int idx = size - 1;
-    int parent = (idx - 1) / 2;
+    int k = size - 1;
+    int p = (k - 1) / 2;
     int tmp;
 
-    if (heap[parent] < heap[idx]) {
+    if (k > 1 && heap[p] < heap[k]) {
         do {
-            tmp = heap[idx];
-            heap[idx] = heap[parent];
-            heap[parent] = tmp;
+            tmp = heap[k];
+            heap[k] = heap[p];
+            heap[p] = tmp;
 
-            idx = parent;
-            parent = (idx - 1) / 2;
-        } while (heap[parent] < heap[idx]);
+            k = p;
+            p = (k - 1) / 2;
+        } while (k > 0 && heap[p] < heap[k]);
     }
-
-    return idx;
+    return k;
 }
 
 void max_heap_pop(uint32_t *heap, uint32_t size) {
-    if (size) {
+    if (size > 0) {
         heap[0] = heap[size - 1];
         int idx = 0;
         int c1;
@@ -50,36 +49,5 @@ void max_heap_pop(uint32_t *heap, uint32_t size) {
                 break;
             }
         }
-
-#if 0
-        while (c1 < size) {
-            if (heap[idx] < heap[c1]) {
-                if (c2 < size && heap[idx] < heap[c2]) {
-                    tmp = heap[c2];
-                    heap[c2] = heap[idx];
-                    heap[idx] = tmp;
-                    idx = c2;
-                    c1 = idx * 2 + 1;
-                    c2 = c1 + 1;
-                } else {
-                    tmp = heap[c1];
-                    heap[c1] = heap[idx];
-                    heap[idx] = tmp;
-                    idx = c1;
-                    c1 = idx * 2 + 1;
-                    c2 = c1 + 1;
-                }
-            } else if (c2 < size && heap[idx] < heap[c2]) {
-                tmp = heap[c2];
-                heap[c2] = heap[idx];
-                heap[idx] = tmp;
-                idx = c2;
-                c1 = idx * 2 + 1;
-                c2 = c1 + 1;
-            } else {
-                break;
-            }
-        }
-#endif
     }
 }

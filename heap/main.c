@@ -4,25 +4,35 @@
 #include <string.h>
 #include "max_heap.h"
 
-int main(int argc, char **argv) {
-    #define SIZE 256
-    uint32_t heap[SIZE];
-    size_t size = 0;
-    memset(&heap[0], 0, sizeof(heap[0]) * SIZE);
+#define ARRAY_SIZE(x) (sizeof(x)/sizeof(x[0]))
+#define SIZE (1 << 20)
+#define SZ SIZE
 
-#define SZ 200
-    uint32_t data[SZ];
+// sort max -> min
+int compar_max(const void *lhs, const void *rhs) {
+    int r = *(const int*)lhs;
+    int l = *(const int*)rhs;
+    if (l < r) {
+        return -1;
+    } else if (l > r) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int main(int argc, char **argv) {
+    uint32_t *heap = malloc(sizeof(heap[0]) * SIZE);
+    size_t size = 0;
+
+    uint32_t *data = malloc(sizeof(data[0]) * SZ);
     srand(0);
     for (int i = 0; i < SZ; ++i) {
-        data[i] = rand() % 1000;
+        data[i] = rand();
     }
 
-    //uint32_t data[] = { 1, 5, 3, 2, 8, 4 };
-    //uint32_t data[] = { 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-    //uint32_t data[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
 
-    for (size_t i = 0; i < (sizeof(data) / sizeof(data[0])); ++i) {
-        //printf("Pushing: %u\n", data[i]);
+    for (size_t i = 0; i < ARRAY_SIZE(data); ++i) {
         heap[size++] = data[i];
         if (max_heap_push(&heap[0], size) < 0) {
             fputs("max_heap_push failed!\n", stderr);
@@ -30,18 +40,22 @@ int main(int argc, char **argv) {
         }
     }
 
-//    printf("Raw heap layout: ");
-//    for (size_t i = 0; i < size; ++i) {
-//        printf("%u ", heap[i]);
-//    }
-//    printf("\n");
-
-    printf("\nMax-min order: ");
-    while (size > 0) {
-        printf("%u ", heap[0]);
+    qsort(&data[0], ARRAY_SIZE(data), sizeof(data[0]), &compar_max);
+    if (size != ARRAY_SIZE(data)) {
+        fputs("Size incorrect\n", stderr);
+        exit(EXIT_FAILURE);
+    }
+    for (int i = 0; i < ARRAY_SIZE(data); ++i) {
+        if (data[i] != heap[0]) {
+            fputs("Houston we have a problem!\n", stderr);
+            exit(EXIT_FAILURE);
+        }
         max_heap_pop(&heap[0], size--);
     }
-    printf("\n");
 
+    printf("Passed.\n");
+
+    free(heap);
+    free(data);
     return 0;
 }
