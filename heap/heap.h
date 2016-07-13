@@ -3,6 +3,6 @@
 
 #include <stdint.h>
 
-int32_t heap_push(uint32_t *begin, uint32_t *end, uint32_t val);
+int32_t heap_push(uint32_t *heap, uint32_t size);
 
 #endif // HEAP__H_

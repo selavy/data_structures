@@ -14,7 +14,8 @@ int main(int argc, char **argv) {
 
     for (size_t i = 0; i < (sizeof(data) / sizeof(data[0])); ++i) {
         printf("Pushing: %u\n", data[i]);
-        if (heap_push(&heap[-1], &heap[++size], data[i]) < 0) {
+        heap[size++] = data[i];
+        if (heap_push(&heap[-1], size) < 0) {
             fputs("heap_push failed!\n", stderr);
             exit(EXIT_FAILURE);
         }
