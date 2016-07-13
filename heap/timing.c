@@ -22,15 +22,26 @@ int main(int argc, char **argv) {
 
     struct timespec tp_start;
     struct timespec tp_end;
+    uint64_t ns;
     clock_gettime(CLOCK_MONOTONIC, &tp_start);
     for (i = 0; i < SIZE; ++i) {
         heap[hsize++] = data[i];
         max_heap_push(&heap[0], hsize);
     }
     clock_gettime(CLOCK_MONOTONIC, &tp_end);
-    const uint64_t ns = (tp_end.tv_sec - tp_start.tv_sec)*1000000000ULL + (tp_end.tv_nsec - tp_start.tv_nsec);
-    printf("Total ns: %" PRIu64 "\n", ns);
-    printf("Average : %0.4f\n", ((double)ns) / SIZE);
+    ns = (tp_end.tv_sec - tp_start.tv_sec)*1000000000ULL + (tp_end.tv_nsec - tp_start.tv_nsec);
+    printf("(PUSH) Total ns: %" PRIu64 "\n", ns);
+    printf("(PUSH) Average : %0.4f\n", ((double)ns) / SIZE);
+
+    clock_gettime(CLOCK_MONOTONIC, &tp_start);
+    while (hsize > 0) {
+        max_heap_pop(&heap[0], hsize--);
+    }
+    clock_gettime(CLOCK_MONOTONIC, &tp_end);
+
+    ns = (tp_end.tv_sec - tp_start.tv_sec)*1000000000ULL + (tp_end.tv_nsec - tp_start.tv_nsec);
+    printf("(POP) Total ns: %" PRIu64 "\n", ns);
+    printf("(POP) Average : %0.4f\n", ((double)ns) / SIZE);
 
     free(data);
     free(heap);
