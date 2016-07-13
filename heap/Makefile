@@ -1,5 +1,5 @@
 CC=gcc
-RELEASE=-O3 -ffast-math -fstrict-aliasing
+RELEASE=-O3 -ffast-math -fstrict-aliasing -march=native
 DEBUG=-O0 -g
 CFLAGS=-std=c99 -Wall -Werror $(RELEASE) #$(DEBUG)
 TARGET=unittest
