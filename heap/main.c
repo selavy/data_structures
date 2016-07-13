@@ -31,7 +31,6 @@ int main(int argc, char **argv) {
         data[i] = rand();
     }
 
-
     for (size_t i = 0; i < ARRAY_SIZE(data); ++i) {
         heap[size++] = data[i];
         if (max_heap_push(&heap[0], size) < 0) {
