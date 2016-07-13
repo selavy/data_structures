@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include "heap.h"
+#include "max_heap.h"
 
 int main(int argc, char **argv) {
     #define SIZE 256
@@ -24,8 +24,8 @@ int main(int argc, char **argv) {
     for (size_t i = 0; i < (sizeof(data) / sizeof(data[0])); ++i) {
         //printf("Pushing: %u\n", data[i]);
         heap[size++] = data[i];
-        if (heap_push(&heap[0], size) < 0) {
-            fputs("heap_push failed!\n", stderr);
+        if (max_heap_push(&heap[0], size) < 0) {
+            fputs("max_heap_push failed!\n", stderr);
             exit(EXIT_FAILURE);
         }
     }
@@ -39,8 +39,9 @@ int main(int argc, char **argv) {
     printf("\nMax-min order: ");
     while (size > 0) {
         printf("%u ", heap[0]);
-        heap_pop(&heap[0], size--);
+        max_heap_pop(&heap[0], size--);
     }
+    printf("\n");
 
     return 0;
 }

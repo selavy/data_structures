@@ -1,6 +1,6 @@
-#include "heap.h"
+#include "max_heap.h"
 
-int32_t heap_push(uint32_t *heap, uint32_t size) {
+int32_t max_heap_push(uint32_t *heap, uint32_t size) {
     int idx = size - 1;
     int parent = (idx - 1) / 2;
     int tmp;
@@ -19,7 +19,7 @@ int32_t heap_push(uint32_t *heap, uint32_t size) {
     return idx;
 }
 
-void heap_pop(uint32_t *heap, uint32_t size) {
+void max_heap_pop(uint32_t *heap, uint32_t size) {
     if (size) {
         heap[0] = heap[size - 1];
         int idx = 0;

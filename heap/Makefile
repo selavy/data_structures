@@ -3,7 +3,7 @@ RELEASE=-O3 -ffast-math -fstrict-aliasing
 DEBUG=-O0 -g
 CFLAGS=-std=c99 -Wall -Werror $(DEBUG)
 TARGET=a.out
-OBJS=main.o heap.o
+OBJS=main.o max_heap.o
 
 $(TARGET): $(OBJS)
 	$(CC) -o $(TARGET) $(CFLAGS) $(OBJS)
